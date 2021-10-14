@@ -1,4 +1,6 @@
 export default {
-  days: document.querySelector('.days'),
-  switchBtn: document.getElementById('theme-switch-toggle'),
+  daysValue: document.querySelector('span[data-value="days"]'),
+  hoursValue: document.querySelector('span[data-value="hours"]'),
+  minsValue: document.querySelector('span[data-value="mins"]'),
+  secondsValue: document.querySelector('span[data-value="secs"]'),
 };

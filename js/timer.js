@@ -1,15 +1,47 @@
-//Задание 1
-const delay = ms => {
-  return new Promise(res => {
-    setTimeout(() => {
-      res(ms);
-    }, ms);
-  });
-};
+import refs from './ref.js';
+const { daysValue, hoursValue, minsValue, secondsValue } = refs;
+class CountdownTimer {
+  constructor({ targetDate }) {
+    this.targetDate = targetDate;
+    this.init();
+  }
 
-const logger = time => console.log(`Resolved after ${time}ms`);
+  init() {
+    this.getDeltaTime();
+    setInterval(() => {
+      this.getDeltaTime();
+    }, 1000);
+  }
 
-// Вызовы функции для проверки
-delay(2000).then(logger); // Resolved after 2000ms
-delay(1000).then(logger); // Resolved after 1000ms
-delay(1500).then(logger); // Resolved after 1500ms
+  getDeltaTime() {
+    const currentTime = Date.now();
+    const deltaTime = this.targetDate - currentTime;
+    this.getTimeComponents(deltaTime);
+  }
+
+  getTimeComponents(time) {
+    const days = Math.floor(time / (1000 * 60 * 60 * 24));
+    const hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const seconds = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    this.updateClockface(days, hours, mins, seconds);
+  }
+
+  pad(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  updateClockface(days, hours, mins, seconds) {
+    const time = `${days}${hours}${mins}${seconds}`;
+    daysValue.textContent = `${days}`;
+    hoursValue.textContent = `${hours}`;
+    minsValue.textContent = `${mins}`;
+    secondsValue.textContent = `${seconds}`;
+  }
+}
+
+const timer = new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date(2022, 0, 0),
+});
