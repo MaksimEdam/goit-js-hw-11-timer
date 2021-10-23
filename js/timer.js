@@ -8,7 +8,7 @@ class CountdownTimer {
 
   init() {
     this.getDeltaTime();
-    setInterval(() => {
+    const test = setInterval(() => {
       this.getDeltaTime();
     }, 1000);
   }
@@ -16,9 +16,12 @@ class CountdownTimer {
   getDeltaTime() {
     const currentTime = Date.now();
     const deltaTime = this.targetDate - currentTime;
+    if (deltaTime <= 0) {
+      clearInterval(test);
+      this.updateClockface();
+    }
     this.getTimeComponents(deltaTime);
   }
-
   getTimeComponents(time) {
     const days = Math.floor(time / (1000 * 60 * 60 * 24));
     const hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
@@ -40,8 +43,7 @@ class CountdownTimer {
     secondsValue.textContent = `${seconds}`;
   }
 }
-
 const timer = new CountdownTimer({
   selector: '#timer-1',
-  targetDate: new Date(2022, 0, 0),
+  targetDate: new Date(2021, 8, 24),
 });
